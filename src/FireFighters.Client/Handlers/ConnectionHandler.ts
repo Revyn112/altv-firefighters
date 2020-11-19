@@ -1,7 +1,7 @@
 import * as alt from 'alt-client'
 import * as natives from 'natives'
 import * as NativeUI from "../libs/NativeUI/NativeUi";
-import * as AsyncLoader from '../Utils/AsyncLoader'
+import * as AsyncHelper from '../Utils/AsyncHelper'
 import Camera from '../Utils/Camera'
 
 const loginPos = new alt.Vector3(-637.12085, 4433.934, 26.870361)
@@ -9,7 +9,7 @@ const loginPos = new alt.Vector3(-637.12085, 4433.934, 26.870361)
 let loginCamera: Camera
 
 alt.on('connectionComplete', async () => {
-    await AsyncLoader.loadModel(alt.hash('s_m_y_fireman_01'))
+    await AsyncHelper.RequestModel(alt.hash('s_m_y_fireman_01'))
     
     loginCamera = new Camera(loginPos, new alt.Vector3(0, 0, 271.66), 20)
     loginCamera.render()

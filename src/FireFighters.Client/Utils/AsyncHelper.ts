@@ -6,7 +6,7 @@ import * as natives from 'natives'
  * @param {string} scaleform
  * @returns {Promise<number>} handle
  */
-export const loadScaleform = async (scaleform: string) => {
+export const RequestScaleform = async (scaleform: string) => {
     return new Promise((resolve, reject) => {
         /* natives.doesScaleformExist(dictName) does not exists */
 
@@ -36,7 +36,7 @@ export const loadScaleform = async (scaleform: string) => {
  * @param {string} dictName
  * @returns {Promise<boolean>} loaded
  */
-export const loadAnimDict = (dictName: string) => {
+export const RequestAnimDict = (dictName: string) => {
     return new Promise((resolve, reject) => {
         if (!natives.doesAnimDictExist(dictName)) {
             reject(new Error(`Animation dictionary does not exist: ${dictName}`))
@@ -72,7 +72,7 @@ export const loadAnimDict = (dictName: string) => {
  * @param {number} model
  * @returns {Promise<boolean>} loaded
  */
-export const loadModel = async (model: number) => {
+export const RequestModel = async (model: number) => {
     return new Promise((resolve, reject) => {
         if (!natives.isModelValid(model)) {
             reject(new Error(`Model does not exist: ${model}`))
@@ -100,5 +100,30 @@ export const loadModel = async (model: number) => {
                 reject(new Error(error)) // probably better resolve(false)
             }
         }, 10)
+    })
+}
+
+export const RequestNamedPtfxAsset = (assetName: string) => {
+    return new Promise((resolve, reject) => {
+        if (natives.hasNamedPtfxAssetLoaded(assetName)) {
+            return resolve(true);
+        }
+
+        natives.requestNamedPtfxAsset(assetName);
+
+        let inter = alt.setInterval(() => {
+            if (natives.hasNamedPtfxAssetLoaded(assetName)) {
+                alt.clearInterval(inter);
+                alt.log('Asset loaded: ' + assetName);
+                return resolve(true);
+            }
+            //alt.log('Requesting asset: ' + assetName);
+        }, 10);
+    });
+}
+
+export const Wait = (timeout: number) => {
+    return new Promise((resolve) => {
+        alt.setTimeout(resolve, timeout);
     })
 }

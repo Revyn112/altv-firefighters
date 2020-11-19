@@ -1,13 +1,11 @@
 ﻿using AltV.Net;
-using AltV.Net.Data;
-using AltV.Net.Elements.Entities;
 using AltV.Net.EntitySync;
 using AltV.Net.EntitySync.ServerEvent;
 using AltV.Net.EntitySync.SpatialPartitions;
-using FireFighters.Server.EntitySync;
 using FireFighters.Server.Models;
 using System;
 using System.Collections.Generic;
+using System.Numerics;
 
 namespace FireFighters.Server
 {
@@ -16,13 +14,13 @@ namespace FireFighters.Server
     {
         public static List<FireStation> FireStations => new List<FireStation>
         {
-            new FireStation("Rockford Hills Fire Station", new Position(-634.7078f, -121.6649f, 39.01375f)),
-            new FireStation("Davis Fire Station", new Position(199.9229f, -1634.029f, 29.803f)),
-            new FireStation("El Burro Heights Fire Station", new Position(1185.74f, -1462.765f, 34.90047f)),
-            new FireStation("Sandy Shores Fire Station", new Position(1690.509f, 3580.94f, 35.62f)),
-            new FireStation("Paleto Bay Fire Station", new Position(-379.9757f, 6119.514f, 31.62197f)),
-            new FireStation("Los Santos International Airport Fire Station", new Position()),
-            new FireStation("Fort Zancudo Fire Station", new Position()),
+            new FireStation("Rockford Hills Fire Station", new Vector3(-634.7078f, -121.6649f, 39.01375f)),
+            new FireStation("Davis Fire Station", new Vector3(199.9229f, -1634.029f, 29.803f)),
+            new FireStation("El Burro Heights Fire Station", new Vector3(1185.74f, -1462.765f, 34.90047f)),
+            new FireStation("Sandy Shores Fire Station", new Vector3(1690.509f, 3580.94f, 35.62f)),
+            new FireStation("Paleto Bay Fire Station", new Vector3(-379.9757f, 6119.514f, 31.62197f)),
+            new FireStation("Los Santos International Airport Fire Station", new Vector3()),
+            new FireStation("Fort Zancudo Fire Station", new Vector3()),
         };
 
         public FirefighterResource()

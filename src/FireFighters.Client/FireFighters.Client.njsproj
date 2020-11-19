@@ -32,10 +32,10 @@
   <ItemGroup>
     <Content Include=".npmrc" />
     <Content Include="libs\NativeUI\version.txt" />
-    <Content Include="Utils\AsyncLoader.ts" />
+    <Content Include="Utils\AsyncHelper.ts" />
     <Content Include="Utils\Camera.ts" />
     <Content Include="Utils\custom.js" />
-    <Content Include="Utils\nativesHelper.js" />
+    <Content Include="Utils\NativesHelper.ts" />
     <Content Include="Utils\vectors.js" />
     <None Include="index.ts" />
     <Content Include="package.json" />
@@ -55,6 +55,9 @@
   </ItemGroup>
   <ItemGroup>
     <TypeScriptCompile Include="EntitySync\BlipStreamer.ts">
+      <SubType>Code</SubType>
+    </TypeScriptCompile>
+    <TypeScriptCompile Include="Handlers\BigWetHoseHandler.ts">
       <SubType>Code</SubType>
     </TypeScriptCompile>
     <TypeScriptCompile Include="Handlers\ConnectionHandler.ts">

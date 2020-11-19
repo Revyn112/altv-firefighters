@@ -1,28 +1,22 @@
 /* eslint-disable import/prefer-default-export */
 
 import * as natives from 'natives'
+import * as AsyncHelper from './AsyncHelper'
 
 /**
  *
  * @param {number} x
  * @param {number} y
  * @param {number} z
- * @param {number} tries
  */
-export function getGroundZ(x, y, z, tries = 0) {
+export async function getGroundZ(x: number, y: number, z: number): Promise<number> {
     natives.setFocusPosAndVel(x, y, z, 0, 0, 0)
 
-    const [, height] = natives.getGroundZFor3dCoord(x, y, z + 100, false, false)
+    await AsyncHelper.Wait(100)
 
-    if (!height && tries < 20) {
-        return getGroundZ(x, y, z + 100, tries + 1)
-    }
+    const [, height] = natives.getGroundZFor3dCoord(x, y, 1000, undefined, undefined, undefined)
 
     natives.clearFocus()
-
-    if (!height) {
-        return 0
-    }
 
     return height
 }
@@ -31,7 +25,7 @@ export function getGroundZ(x, y, z, tries = 0) {
  * Display default notification
  * @param {string} text
  */
-export function displayNotification(text) {
+export function displayNotification(text: string) {
     natives.beginTextCommandThefeedPost('STRING')
     natives.addTextComponentSubstringPlayerName(text)
     natives.endTextCommandThefeedPostTicker(false, true)
@@ -48,12 +42,12 @@ export function displayNotification(text) {
  * @param {number} durationMult
  */
 export function displayAdvancedNotification(
-    message,
+    message: string,
     title = 'Title',
     subtitle = 'subtitle',
-    notifImage = null,
+    notifImage: string = null,
     iconType = 0,
-    backgroundColor = null,
+    backgroundColor: number = null,
     durationMult = 1,
 ) {
     natives.beginTextCommandThefeedPost('STRING')

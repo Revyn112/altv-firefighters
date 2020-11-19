@@ -1,6 +1,6 @@
 import * as alt from 'alt-client';
 import * as natives from 'natives';
-export const loadScaleform = async (scaleform) => {
+export const RequestScaleform = async (scaleform) => {
     return new Promise((resolve, reject) => {
         const handle = natives.requestScaleformMovie(scaleform);
         const deadline = new Date().getTime() + 1000 * 10;
@@ -19,7 +19,7 @@ export const loadScaleform = async (scaleform) => {
         }, 10);
     });
 };
-export const loadAnimDict = (dictName) => {
+export const RequestAnimDict = (dictName) => {
     return new Promise((resolve, reject) => {
         if (!natives.doesAnimDictExist(dictName)) {
             reject(new Error(`Animation dictionary does not exist: ${dictName}`));
@@ -46,7 +46,7 @@ export const loadAnimDict = (dictName) => {
         }, 10);
     });
 };
-export const loadModel = async (model) => {
+export const RequestModel = async (model) => {
     return new Promise((resolve, reject) => {
         if (!natives.isModelValid(model)) {
             reject(new Error(`Model does not exist: ${model}`));
@@ -69,6 +69,21 @@ export const loadModel = async (model) => {
                 const error = `Error: Async loading failed for model: ${model}`;
                 alt.log(error);
                 reject(new Error(error));
+            }
+        }, 10);
+    });
+};
+export const RequestNamedPtfxAsset = (assetName) => {
+    return new Promise((resolve, reject) => {
+        if (natives.hasNamedPtfxAssetLoaded(assetName)) {
+            return resolve(true);
+        }
+        natives.requestNamedPtfxAsset(assetName);
+        let inter = alt.setInterval(() => {
+            if (natives.hasNamedPtfxAssetLoaded(assetName)) {
+                alt.clearInterval(inter);
+                alt.log('Asset loaded: ' + assetName);
+                return resolve(true);
             }
         }, 10);
     });
