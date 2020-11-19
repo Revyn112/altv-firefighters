@@ -1,0 +1,2 @@
+F:\Development\GTA\altv-firefighters\src\FireFighters.Client\obj\Debug\FireFighters.Client.njsproj.CoreCompileInputs.cache
+F:\Development\GTA\altv-firefighters\src\FireFighters.Client\bin\Microsoft.NodejsTools.WebRole.dll

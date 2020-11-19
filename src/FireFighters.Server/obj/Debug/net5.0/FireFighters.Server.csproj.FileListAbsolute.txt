@@ -1,0 +1,12 @@
+F:\Development\GTA\altv-firefighters\src\FireFighters.Server\obj\Debug\net5.0\FireFighters.Server.csprojAssemblyReference.cache
+F:\Development\GTA\altv-firefighters\src\FireFighters.Server\obj\Debug\net5.0\FireFighters.Server.GeneratedMSBuildEditorConfig.editorconfig
+F:\Development\GTA\altv-firefighters\src\FireFighters.Server\obj\Debug\net5.0\FireFighters.Server.AssemblyInfoInputs.cache
+F:\Development\GTA\altv-firefighters\src\FireFighters.Server\obj\Debug\net5.0\FireFighters.Server.AssemblyInfo.cs
+F:\Development\GTA\altv-firefighters\src\FireFighters.Server\obj\Debug\net5.0\FireFighters.Server.csproj.CoreCompileInputs.cache
+F:\Development\GTA\altv-firefighters\bin\resources\altv-firefighters\server\net5.0\FireFighters.Server.deps.json
+F:\Development\GTA\altv-firefighters\bin\resources\altv-firefighters\server\net5.0\FireFighters.Server.dll
+F:\Development\GTA\altv-firefighters\bin\resources\altv-firefighters\server\net5.0\ref\FireFighters.Server.dll
+F:\Development\GTA\altv-firefighters\bin\resources\altv-firefighters\server\net5.0\FireFighters.Server.pdb
+F:\Development\GTA\altv-firefighters\src\FireFighters.Server\obj\Debug\net5.0\FireFighters.Server.dll
+F:\Development\GTA\altv-firefighters\src\FireFighters.Server\obj\Debug\net5.0\ref\FireFighters.Server.dll
+F:\Development\GTA\altv-firefighters\src\FireFighters.Server\obj\Debug\net5.0\FireFighters.Server.pdb

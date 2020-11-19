@@ -1,0 +1,90 @@
+Firefighters Mod
+
+Anregungen:
+- https://www.youtube.com/watch?v=b9VF3DFKmlw
+- https://forum.cfx.re/t/release-fire-script-by-albo1125/275069
+- https://forum.cfx.re/t/release-fire-department-training-center-structure-fire-boat-fire-difficult-fire-simulation/1291882
+- https://github.com/symeRobinson/BigWetHose
+- https://www.lcpdfr.com/downloads/gta5mods/scripts/26877-fire-callouts-structure-fires-brush-fires-extraction-saw-more/
+
+
+Module:
+- StandaloneFirefightersResource
+- FirefightersResource (Backend / Basis)
+- SimpleInventory
+- MissionGenerator
+- MissionGeneratorSingleplayer
+
+StandaloneFirefightersResource:
+- Nach Join Auswahl des FD, wo man spawnen möchte
+- Alle FDs per Marker markieren
+- Fahrzeuge im/beim FD spawnen
+-- ambulance (0x45D56ADA)
+-- firetruk (0x73920F8E)
+-- fbi (0x432EA949) ... in rot
+-- lguard (0x1BF8D381)
+-- towtruck (0xB12314E0)
+- Nach Join automatisch richiges Model (s_m_y_fireman_01)
+- SimpleInventory
+-- Benutzen / Verbrauchen
+-- Weapon Equipper für Feuerlöscher
+- SimpleEmergencyMedicalServices (tragen, wiederbeleben)
+
+FirefightersResource:
+- Fire Truck an Hydrant schließen (rope?)
+-- Anschließend starker Wasserstrahl über Feuerlöscher im Umkreis von 50 Metern
+- Wasserflugzeug ("water bomber"), siehe fire callouts
+- Items:
+-- Rettungsschere (für Verkehrsunfälle)
+-- Feuerlöscher (zum Löschen)
+-- CO2 Feuerlöscher (zum Löschen von Fettbränden)
+-- Axt (Türöffner)
+
+Sounds:
+- Pager
+- Alarmierung im FD
+- Sauerstoffmaske
+- Rettungsschere
+
+Pager:
+- Entweder eigene UI
+- Oder Simple Notifications (links)
+
+Mögliche Missionen:
+- Gebäudebrand
+- Gebäudebrand mit Stromkasten
+- Gebäudebrand mit Fettbrand (CO2 Feuerlöscher)
+- Gebäudebrand mit Gasexplosion
+- Gebäudebrand mit NPCs (Singleplayer)
+- Gebäudebrandmelder ohne Brand
+- Industriefeuer (Giftige Gase / Kontamination)
+- Brennendes Fahrzeug
+- Buschfeuer
+- Waldbrand
+- Verkehrsunfall mit NPCs (Singleplayer)
+- Verletzte NPCs
+- Vermisste NPCs
+- Katze auf Baum
+- Flugzeugabsturz
+
+
+Logik Feuer (erste Idee):
+- Ein Feuer besteht aus mehreren Flammen
+- Eine Flamme wird in game durch Partikel (Rauch, Feuer) und ScriptFire dargestellt
+- Flammen können neue Flammen spawnen, welche dann eine Children/Parent Beziehung haben
+- Flammen, dessen Children auch Children haben, können nicht gelöscht werden
+- Flammen haben Level
+- Jede Flamme tickt nach 8-20 Sekunden
+- Pro Tick steigt das Level um 1
+- Wenn das Flammenobjekt in game gelöscht wurde, dann verringert sich das Level um 1
+- Ab Level 3 spawnt die Flamme alle 2 Ticks eine neue Flamme Lvl 1
+- Ab Level 8 spawnt die Flamme alle 2 Ticks zwei neue Flammen Lvl 3
+- Ab Level 15 spawnt die Flamme alle 2 Ticks zwei neue Flammen Lvl 5
+- Unterschiedliche Darstellung je nach Level (Rauch, Größe Flammen Partikel)
+
+
+Idee:
+- Feuerschlauch mittels Rope darstellen möglich?
+- Ansonsten Mod einbauen
+-- Partikeleffekt: water_cannon_jet oder water_cannon_spray
+-- https://forum.cfx.re/t/request-fire-hose-water-gun-water-hose-stronger-fire-extinguisher/107277/4
