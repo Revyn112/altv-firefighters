@@ -36,13 +36,10 @@ namespace FireFighters.Server
                 (entityId, entityType, threadCount) => (entityType % threadCount),
                 (threadId) => new LimitedGrid3(50_000, 50_000, 100, 10_000, 10_000, 300),
                 new IdProvider());
-
-            FireStations.ForEach(e => AltEntitySync.AddEntity(e));
         }
 
         public override void OnStop()
         {
-            throw new NotImplementedException();
         }
     }
 }

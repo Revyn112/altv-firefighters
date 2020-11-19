@@ -54,3 +54,15 @@ alt.onServer('FireFighters:PlayerSpawned', () => {
 
     //alt.toggleGameControls(true)
 })
+
+let fireStationBlips: alt.PointBlip[] = []
+
+alt.onServer('FireFighters:InitFireStations', (fireStations) => {
+    for (let i = 0; i < fireStations.length; i++) {
+        const station = fireStations[i]
+        fireStationBlips[fireStations.name] = new alt.PointBlip(station.posX, station.posY, station.posZ)
+        fireStationBlips[fireStations.name].sprite = 60 // police
+        fireStationBlips[fireStations.name].color = 1 // red
+        fireStationBlips[fireStations.name].shortRange = true
+    }
+})

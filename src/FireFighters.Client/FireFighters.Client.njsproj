@@ -54,7 +54,8 @@
     <Folder Include="Utils\" />
   </ItemGroup>
   <ItemGroup>
-    <TypeScriptCompile Include="EntitySync\BlipStreamer.ts">
+    <TypeScriptCompile Include="EntitySync\FireStreamer.ts" />
+    <TypeScriptCompile Include="EntitySync\FlameStreamer.ts">
       <SubType>Code</SubType>
     </TypeScriptCompile>
     <TypeScriptCompile Include="Handlers\BigWetHoseHandler.ts">

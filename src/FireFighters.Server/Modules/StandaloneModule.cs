@@ -26,6 +26,7 @@ namespace FireFighters.Server.Modules
             var fireStationNames = FirefighterResource.FireStations.Select(e => e.Name);
             var serialized = JsonConvert.SerializeObject(fireStationNames);
 
+            player.Emit("FireFighters:InitFireStations", FirefighterResource.FireStations);
             player.Emit("FireFighters:SelectSpawn", serialized);
         }
 
