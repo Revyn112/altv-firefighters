@@ -1,6 +1,6 @@
 import * as alt from 'alt-client'
 
-import './EntitySync/BlipStreamer'
+//import './EntitySync/BlipStreamer'
 
 import './Handlers/ConnectionHandler'
 import './Handlers/WaypointTeleportHandler'
