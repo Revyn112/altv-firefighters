@@ -1,2 +1,15 @@
 @echo off
-"C:\Program Files (x86)\Microsoft Visual Studio\2019\BuildTools\MSBuild\Current\Bin\MSBuild.exe" ./src/FireFighters.sln
+setlocal enabledelayedexpansion
+
+cd src
+
+cd FireFighters.Server
+dotnet build
+
+cd ..
+cd FireFighters.Client
+CMD /C "npm run clean"
+CMD /C "npm run build"
+
+cd ..
+cd ..
