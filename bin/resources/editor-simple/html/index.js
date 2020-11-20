@@ -57,7 +57,12 @@ function createEditor() {
 		target: monaco.languages.typescript.ScriptTarget.ES6,
 		allowNonTsExtensions: true
 	});
-
+	
+	monaco.languages.typescript.javascriptDefaults.setExtraLibs([
+						{ content: Client },
+						{ content: Natives },
+				  ]);
+	
 	if(!debug)
 	mainEditor.className="hidden";
 	alt.emit('editorReady');
@@ -78,8 +83,13 @@ function switchTab(selectedTab, modelId) {
 	var currentModel = editor.getModel();
 	if (currentModel === data.client.model) {
 		data.client.state = currentState;
+		monaco.languages.typescript.javascriptDefaults.setExtraLibs([{ content: Server }])
 	} else if (currentModel === data.server.model) {
 		data.server.state = currentState;
+		monaco.languages.typescript.javascriptDefaults.setExtraLibs([
+			{ content: Client },
+			{ content: Natives },
+		]);
 	}
 	editor.setModel(data[modelId].model);
 	editor.focus();
