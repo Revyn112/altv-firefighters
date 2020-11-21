@@ -107,6 +107,8 @@ function execute() {
 		successContainer.className = "hidden";
 		errorsContainer.className = "show";
 		errorsContainer.innerHTML = "ERROR: Fix errors noob."
+		alt.log('errors in editor:')
+		errors.forEach(e => alt.log(JSON.stringify(e)))
 		return;
 	}
 	errorsContainer.className = "hidden";
