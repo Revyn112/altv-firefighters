@@ -12,7 +12,7 @@ namespace FireFighters.Server.EntitySync.Types
         : Entity
     {
         public Fire(Vector3 position, bool explosionOnStart)
-            : base((ulong)EntityTypes.Fire, position, 0, 100)
+            : base((ulong)EntityTypes.Fire, position, 0, 500)
         {
 
         }

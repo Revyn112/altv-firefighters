@@ -21,29 +21,23 @@ alt.onServer("entitySync:create", (entityId, entityType, position, newEntityData
         return;
 
     if (newEntityData) {
-        let flame = new ClientFlame()
-        flame.ScriptFireHandle = natives.startScriptFire(position.X, position.Y, position.Z, 25, newEntityData.isGasFire)
+        let scriptFire = natives.startScriptFire(position.X, position.Y, position.Z, 25, newEntityData.isGasFire)
 
-        let Blip = {
-            pointer: pointer,
-            pos: position,
-            sprite: newEntityData.sprite,
-            color: newEntityData.color,
-            scale: newEntityData.scale,
-            name: newEntityData.name,
-            shortRange: newEntityData.shortRange
+        let Fire = {
+            id: entityId,
+            scriptFireHandle: scriptFire,
+            isGasFire: newEntityData.isGasFire
         };
 
-        blips[entityId] = Blip;
+        fires[entityId] = Fire;
     } else {
-        let restoredBlip = blips[entityId];
-        restoredBlip.handle = new alt.PointBlip(restoredBlip.pos.x, restoredBlip.pos.y, restoredBlip.pos.z);
-        restoredBlip.handle.sprite = restoredBlip.sprite;
-        restoredBlip.handle.color = restoredBlip.color;
-        restoredBlip.handle.scale = restoredBlip.scale;
-        restoredBlip.handle.name = restoredBlip.name;
-        restoredBlip.handle.shortRange = restoredBlip.shortRange;
-    }
+        let restoreFire = fires[entityId];
+        restoreFire.handle = new alt.PointBlip(restoreFire.pos.x, restoreFire.pos.y, restoreFire.pos.z);
+        restoreFire.handle.sprite = restoreFire.sprite;
+        restoreFire.handle.color = restoreFire.color;
+        restoreFire.handle.scale = restoreFire.scale;
+        restoreFire.handle.name = restoreFire.name;
+        restoreFire.handle.shortRange = restoreFire.shortRange;
 })
 
 alt.onServer("entitySync:remove", (entityId, entityType) => {
