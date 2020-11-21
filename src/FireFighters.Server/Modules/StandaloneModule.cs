@@ -23,11 +23,8 @@ namespace FireFighters.Server.Modules
             player.Position = new Position();
             player.Dimension = 100 + player.Id;
 
-            var fireStationNames = FirefighterResource.FireStations.Select(e => e.Name);
-            var serialized = JsonConvert.SerializeObject(fireStationNames);
-
             player.Emit("FireFighters:InitFireStations", FirefighterResource.FireStations);
-            player.Emit("FireFighters:SelectSpawn", serialized);
+            player.Emit("FireFighters:SelectSpawn", JsonConvert.SerializeObject(FirefighterResource.FireStations.Select(e => e.Name)));
         }
 
         private void OnSpawnAtPoint(IPlayer player, string fireStationName)

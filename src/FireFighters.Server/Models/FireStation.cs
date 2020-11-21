@@ -1,4 +1,6 @@
 ﻿using AltV.Net;
+using AltV.Net.Elements.Entities;
+using System.Collections.Generic;
 using System.Numerics;
 
 namespace FireFighters.Server.Models
@@ -6,10 +8,11 @@ namespace FireFighters.Server.Models
     public class FireStation
         : IWritable
     {
-        public FireStation(string name, Vector3 position)
+        public FireStation(string name, Vector3 position, List<Vehicle> vehicles)
         {
             Name = name;
             Position = position;
+            Vehicles = vehicles;
         }
 
         public string Name { get; set; }
@@ -29,5 +32,7 @@ namespace FireFighters.Server.Models
             writer.Value(Position.Z);
             writer.EndObject();
         }
+
+        public List<Vehicle> Vehicles { get; set; }
     }
 }
