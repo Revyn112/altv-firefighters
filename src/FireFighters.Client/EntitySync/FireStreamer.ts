@@ -9,17 +9,18 @@ class ClientFire {
 
     public IsGasFire: boolean
     public FlamesSpawned: boolean
+    public Explosion: boolean
 
     public Position: alt.Vector3
 }
 
-var fires: ClientFire[] = []
-const EntityTypeFire = 3
-const EntitySyncFireRange = 500
+var entities: ClientFire[] = []
+const EntityType = 3
+const EntitySyncRange = 500
 const FireSmokeSize = 8
 
 alt.onServer("entitySync:create", async (entityId: number, entityType: number, position: alt.Vector3, newEntityData: any) => {
-    if (entityType !== EntityTypeFire)
+    if (entityType !== EntityType)
         return;
 
     alt.log('entitySync:create (fire)')
@@ -32,51 +33,60 @@ alt.onServer("entitySync:create", async (entityId: number, entityType: number, p
         let fire = new ClientFire()
         fire.Position = position
         fire.IsGasFire = newEntityData.isGasFire
+        fire.Explosion = newEntityData.explosionOnStart
 
-        fires[entityId] = fire;
+        entities[entityId] = fire;
 
-        await startFireAtClient(fire)
+        await spawnEntityAtClient(fire)
     } else {
-        let restoredFire = fires[entityId]
+        let restoredFire = entities[entityId]
 
-        await startFireAtClient(restoredFire)
+        await spawnEntityAtClient(restoredFire)
     }
 })
 
 alt.onServer("entitySync:remove", (entityId, entityType) => {
-    if (entityType !== EntityTypeFire)
+    if (entityType !== EntityType)
         return;
 
-    if (fires.hasOwnProperty(entityId)) {
-        stopFireAtClient(fires[entityId])
+    if (entities.hasOwnProperty(entityId)) {
+        removeEntityAtClient(entities[entityId])
     }
 })
 
-alt.onServer("entitySync:updatePosition", (entityId, entityType, position) => {
-    if (entityType !== EntityTypeFire)
+alt.onServer("entitySync:updatePosition", async (entityId, entityType, position) => {
+    if (entityType !== EntityType)
         return;
 
-    if (fires.hasOwnProperty(entityId)) {
-        fires[entityId].Position = position;
+    if (entities.hasOwnProperty(entityId) && entities[entityId].Position != position) {
+        entities[entityId].Position = position
+
+        if (Vectors.distance(alt.Player.local.pos, position) <= EntitySyncRange) {
+            removeEntityAtClient(entities[entityId])
+            await spawnEntityAtClient(entities[entityId])
+        }
     }
 })
 
 alt.onServer("entitySync:updateData", (entityId, entityType, newEntityData) => {
-    if (entityType !== EntityTypeFire)
+    if (entityType !== EntityType || !entities.hasOwnProperty(entityId))
         return;
 
-    if (newEntityData.hasOwnProperty("isGasFire") && fires.hasOwnProperty(entityId))
-        fires[entityId].IsGasFire = newEntityData.isGasFire;
+    if (newEntityData.hasOwnProperty("isGasFire"))
+        entities[entityId].IsGasFire = newEntityData.isGasFire;
+
+    if (newEntityData.hasOwnProperty("explosionOnStart"))
+        entities[entityId].Explosion = newEntityData.explosionOnStart;
 })
 
 alt.onServer("entitySync:clearCache", (entityId, entityType) => {
-    if (entityType !== EntityTypeFire)
+    if (entityType !== EntityType)
         return;
 
-    if (fires.hasOwnProperty(entityId)) {
-        stopFireAtClient(fires[entityId])
+    if (entities.hasOwnProperty(entityId)) {
+        removeEntityAtClient(entities[entityId])
         
-        delete fires[entityId];
+        delete entities[entityId];
     }
 })
 
@@ -85,42 +95,52 @@ alt.onServer("entitySync:netOwner", (entityId, entityType, isNetOwner) => {
 })
 
 
-alt.onServer('FireFighters:Fire:NewStarted', async (position: alt.Vector3, explosion: boolean) => {
-    if (explosion && Vectors.distance(alt.Player.local.pos, position) <= EntitySyncFireRange) {
-        natives.shakeGameplayCam("MEDIUM_EXPLOSION_SHAKE", 1)
-        await AsyncHelper.RequestNamedPtfxAsset("scr_trevor3")
-        natives.startParticleFxNonLoopedAtCoord("scr_trev3_trailer_expolsion", position.x, position.y, position.z + 1, 0, 0, 0, 1, false, false, false)
-        natives.playSoundFromCoord(-1, "MAIN_EXPLOSION_CHEAP", position.x, position.y, position.z, '', false, EntitySyncFireRange, false)
-    }
-})
-
-alt.onServer('FireFighters:Fire:FlamesSpawning', (entityId: number) => {
-    if (!fires.hasOwnProperty(entityId))
+alt.onServer('FireFighters:Fire:NewStarted', async (entityId: number) => {
+    if (!entities.hasOwnProperty(entityId))
         return
 
-    fires[entityId].FlamesSpawned = true
+    const pos = entities[entityId].Position
 
-    if (fires[entityId].EmbersSmokeHandle != null) {
-        fires[entityId].FireSmokeHandle = natives.startParticleFxLoopedAtCoord("scr_env_agency3b_smoke", fires[entityId].Position.x, fires[entityId].Position.y, fires[entityId].Position.z, 0, 0, 0, FireSmokeSize, false, false, false, false)
+    if (entities[entityId] && Vectors.distance(alt.Player.local.pos, pos) <= EntitySyncRange) {
+        await AsyncHelper.RequestNamedPtfxAsset("scr_trevor3")
+
+        natives.shakeGameplayCam("MEDIUM_EXPLOSION_SHAKE", 1)
+        natives.useParticleFxAsset("scr_trevor3")
+        natives.startParticleFxNonLoopedAtCoord("scr_trev3_trailer_expolsion", pos.x, pos.y, pos.z + 1, 0, 0, 0, 1, false, false, false)
+        natives.playSoundFromCoord(-1, "MAIN_EXPLOSION_CHEAP", pos.x, pos.y, pos.z, '', false, EntitySyncRange, false)
+    }
+})
+
+alt.onServer('FireFighters:Fire:FlamesSpawning', async (entityId: number) => {
+    if (!entities.hasOwnProperty(entityId))
+        return
+
+    entities[entityId].FlamesSpawned = true
+
+    if (entities[entityId].EmbersSmokeHandle != null) {
+        await AsyncHelper.RequestNamedPtfxAsset("scr_agencyheistb")
+
+        natives.useParticleFxAsset("scr_agencyheistb")
+        entities[entityId].FireSmokeHandle = natives.startParticleFxLoopedAtCoord("scr_env_agency3b_smoke", entities[entityId].Position.x, entities[entityId].Position.y, entities[entityId].Position.z, 0, 0, 0, FireSmokeSize, false, false, false, false)
     }
 
 })
 
-const startFireAtClient = async (fire: ClientFire) => {
-    if (!fire || !fire.Position) return
-
+const spawnEntityAtClient = async (fire: ClientFire) => {
+    if (!fire) return
 
     await AsyncHelper.RequestNamedPtfxAsset("scr_agencyheistb")
-    natives.useParticleFxAsset("scr_agencyheistb")
 
+    natives.useParticleFxAsset("scr_agencyheistb")
     fire.EmbersSmokeHandle = natives.startParticleFxLoopedAtCoord("scr_env_agency3b_smoke", fire.Position.x, fire.Position.y, fire.Position.z, 0, 0, 0, 0.3, false, false, false, false)
 
     if (fire.FlamesSpawned) {
+        natives.useParticleFxAsset("scr_agencyheistb")
         fire.FireSmokeHandle = natives.startParticleFxLoopedAtCoord("scr_env_agency3b_smoke", fire.Position.x, fire.Position.y, fire.Position.z, 0, 0, 0, FireSmokeSize, false, false, false, false)
     }
 }
 
-const stopFireAtClient = (fire: ClientFire) => {
+const removeEntityAtClient = (fire: ClientFire) => {
     if (!fire) return
 
     if (fire.EmbersSmokeHandle) {

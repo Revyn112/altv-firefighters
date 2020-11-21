@@ -4,6 +4,7 @@ using AltV.Net.Elements.Entities;
 using Newtonsoft.Json;
 using System;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace FireFighters.Server
 {
@@ -13,17 +14,18 @@ namespace FireFighters.Server
         public Debug()
         {
             Alt.OnConsoleCommand += OnServerConsoleCommand;
-            Alt.OnClient<string>("Debug:SpawnVehicle", OnSpawnVehicleCommand);
-            Alt.OnClient("Debug:LogCarPosRot", OnLogCarPosRot);
-            Alt.OnClient("Debug:SpawnMenu", OnSpawnMenu);
+            Alt.OnClient<string>("FireFighters:Debug:SpawnVehicle", OnSpawnVehicleCommand);
+            Alt.OnClient("FireFighters:Debug:LogCarPosRot", OnLogCarPosRot);
+            Alt.OnClient("FireFighters:Debug:SpawnMenu", OnSpawnMenu);
+            Alt.OnClient("FireFighters:Debug:SpawnFire", OnSpawnFire);
         }
 
         private void OnLogCarPosRot(IPlayer player)
         {
             if (player.Vehicle == null) return;
 
-            player.Emit("Debug:Log", JsonConvert.SerializeObject(player.Vehicle.Position));
-            player.Emit("Debug:Log", JsonConvert.SerializeObject(player.Vehicle.Rotation));
+            player.Emit("FireFighters:Debug:Log", JsonConvert.SerializeObject(player.Vehicle.Position));
+            player.Emit("FireFighters:Debug:Log", JsonConvert.SerializeObject(player.Vehicle.Rotation));
         }
 
         private void OnSpawnMenu(IPlayer player)
@@ -31,6 +33,19 @@ namespace FireFighters.Server
             player.Position = new Position();
             player.Dimension = 100 + player.Id;
             player.Emit("FireFighters:SelectSpawn", JsonConvert.SerializeObject(FirefighterResource.FireStations.Select(e => e.Name)));
+        }
+
+        private void OnSpawnFire(IPlayer player)
+        {
+            var pos = new Position(player.Position.X, player.Position.Z, player.Position.Z);
+
+            var _ = new FireBuilder()
+                .SetPosition(player.Position)
+                .SetFlameSpawnDelay(3000)
+                .InitializeFire();
+
+            // or:
+            //Alt.Emit("FireFighters:Fire:Create", player.Position);
         }
 
         private void OnSpawnVehicleCommand(IPlayer player, string vehicleModel)

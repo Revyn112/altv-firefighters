@@ -4,14 +4,12 @@ import * as NativeUI from "../libs/NativeUI/NativeUi";
 import * as AsyncHelper from '../Utils/AsyncHelper'
 import Camera from '../Utils/Camera'
 
-const loginPos = new alt.Vector3(-637.12085, 4433.934, 26.870361)
-
 let loginCamera: Camera
 
 alt.on('connectionComplete', async () => {
     await AsyncHelper.RequestModel(alt.hash('s_m_y_fireman_01'))
     
-    loginCamera = new Camera(loginPos, new alt.Vector3(0, 0, 271.66), 20)
+    loginCamera = new Camera(new alt.Vector3(-637.12085, 4433.934, 26.870361), new alt.Vector3(0, 0, 271.66), 20)
     loginCamera.render()
 
     natives.setEntityAlpha(alt.Player.local.scriptID, 0, false)

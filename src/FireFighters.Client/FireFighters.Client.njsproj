@@ -35,7 +35,7 @@
     <Content Include="Utils\Camera.ts" />
     <Content Include="Utils\custom.js" />
     <Content Include="Utils\NativesHelper.ts" />
-    <Content Include="Utils\vectors.js" />
+    <Content Include="Utils\Vectors.ts" />
     <None Include="index.ts" />
     <Content Include="package.json" />
     <Content Include="README.md" />

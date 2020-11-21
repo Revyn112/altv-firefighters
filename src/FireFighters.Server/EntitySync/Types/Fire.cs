@@ -1,9 +1,7 @@
-﻿using AltV.Net.EntitySync;
-using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using AltV.Net;
+using AltV.Net.EntitySync;
+using FireFighters.Server.Modules;
 using System.Numerics;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace FireFighters.Server.EntitySync.Types
@@ -11,25 +9,38 @@ namespace FireFighters.Server.EntitySync.Types
     public class Fire
         : Entity
     {
-        public Fire(Vector3 position, bool explosionOnStart)
-            : base((ulong)EntityTypes.Fire, position, 0, 500)
-        {
+        private bool _initialized;
 
+        public Fire(Vector3 position)
+            : base((ulong)EntityTypes.Fire, position, 0, FireModule.FireStreamRange)
+        {
         }
 
-        public bool Initialized
+        public async Task<bool> Initialize()
         {
-            get
+            if (_initialized)
             {
-                if (!TryGetData("initialized", out bool initialized))
-                    return false;
+                return false;
+            }
 
-                return initialized;
-            }
-            set
-            {
-                SetData("initialized", value);
-            }
+            _initialized = true;
+
+            Alt.EmitAllClients("FireFighters:Fire:NewStarted", Id);
+
+            await Task.Delay(FlameSpawnDelay);
+
+            Alt.EmitAllClients("FireFighters:Fire:FlamesSpawning", Id);
+
+            // todo: add flames
+            var flameBuilder = new FlameBuilder();
+            if (IsGasFire) flameBuilder.GasFire();
+            flameBuilder.SetPosition(Position);
+
+            MainFlame = flameBuilder.InitializeFlame();
+
+            OnTick(); // no await!
+
+            return _initialized;
         }
 
         public bool ExplosionOnStart
@@ -47,6 +58,57 @@ namespace FireFighters.Server.EntitySync.Types
             }
         }
 
-        public List<Flame> Flames { get; set; }
+        /*public int MaxSpreadDistance 
+        {
+            get
+            {
+                if (!TryGetData("maxSpreadDistance", out int maxSpreadDistance))
+                    return 80;
+
+                return maxSpreadDistance;
+            }
+            set
+            {
+                SetData("maxSpreadDistance", value);
+            }
+        }*/
+
+        public int FlameSpawnDelay
+        {
+            get
+            {
+                if (!TryGetData("flameSpawnDelay", out int flameSpawnDelay))
+                    return 80;
+
+                return flameSpawnDelay;
+            }
+            set
+            {
+                SetData("flameSpawnDelay", value);
+            }
+        }
+
+        public Flame MainFlame { get; set; }
+        public bool IsGasFire { get; internal set; }
+
+        public async void OnTick()
+        {
+            if (!_initialized)
+            {
+                return;
+            }
+
+            if (MainFlame.Extinguished)
+            {
+                AltEntitySync.RemoveEntity(this);
+                return;
+            }
+
+            MainFlame.OnTick();
+
+            await Task.Delay(50);
+
+            OnTick();
+        }
     }
 }
