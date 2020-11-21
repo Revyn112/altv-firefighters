@@ -30,7 +30,6 @@
     <DebugSymbols>true</DebugSymbols>
   </PropertyGroup>
   <ItemGroup>
-    <Content Include=".npmrc" />
     <Content Include="libs\NativeUI\version.txt" />
     <Content Include="Utils\AsyncHelper.ts" />
     <Content Include="Utils\Camera.ts" />
@@ -62,6 +61,9 @@
       <SubType>Code</SubType>
     </TypeScriptCompile>
     <TypeScriptCompile Include="Handlers\ConnectionHandler.ts">
+      <SubType>Code</SubType>
+    </TypeScriptCompile>
+    <TypeScriptCompile Include="Handlers\ConsoleHandler.ts">
       <SubType>Code</SubType>
     </TypeScriptCompile>
     <TypeScriptCompile Include="Handlers\WaypointTeleportHandler.ts">
