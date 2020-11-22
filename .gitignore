@@ -364,3 +364,5 @@ MigrationBackup/
 bin/cache/*
 bin/resources/altv-firefighters/client/*
 bin/resources/altv-firefighters/server/*
+bin/resources/altv-firefighters-standalone/client/*
+bin/resources/altv-firefighters-standalone/server/*
