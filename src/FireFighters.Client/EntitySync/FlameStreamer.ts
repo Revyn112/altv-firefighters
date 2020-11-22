@@ -123,7 +123,7 @@ const spawnEntityAtClient = async (flame: ClientFlame) => {
 
     await AsyncHelper.RequestNamedPtfxAsset("scr_agencyheistb")
     natives.useParticleFxAsset("scr_agencyheistb")
-    flame.SmokeHandle = natives.startParticleFxLoopedAtCoord("scr_env_agency3b_smoke", flame.Position.x, flame.Position.y, flame.Position.z + 1, 0, 0, 0, 3, false, false, false, false)
+    flame.SmokeHandle = natives.startParticleFxLoopedAtCoord("scr_env_agency3b_smoke", flame.Position.x, flame.Position.y, flame.Position.z + 2, 0, 0, 0, 1.5, false, false, false, false)
 
     flame.Active = true
 }

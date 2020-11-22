@@ -19,7 +19,7 @@ export const RequestScaleform = async (scaleform: string) => {
         const inter = alt.setInterval(() => {
             if (natives.hasScaleformMovieLoaded(handle)) {
                 alt.clearInterval(inter)
-                alt.log(`Scaleform loaded: ${scaleform}`)
+                //alt.log(`Scaleform loaded: ${scaleform}`)
                 resolve(handle)
             } else if (deadline < new Date().getTime()) {
                 alt.clearInterval(inter)
@@ -55,7 +55,7 @@ export const RequestAnimDict = (dictName: string) => {
         const inter = alt.setInterval(() => {
             if (natives.hasAnimDictLoaded(dictName)) {
                 alt.clearInterval(inter)
-                alt.log(`Animation dictionary loaded: ${dictName}`)
+                //alt.log(`Animation dictionary loaded: ${dictName}`)
                 resolve(true)
             } else if (deadline < new Date().getTime()) {
                 alt.clearInterval(inter)
@@ -91,7 +91,7 @@ export const RequestModel = async (model: number) => {
         const inter = alt.setInterval(() => {
             if (natives.hasModelLoaded(model)) {
                 alt.clearInterval(inter)
-                alt.log(`Model loaded: ${model}`)
+                //alt.log(`Model loaded: ${model}`)
                 resolve(true)
             } else if (deadline < new Date().getTime()) {
                 alt.clearInterval(inter)
@@ -114,7 +114,7 @@ export const RequestNamedPtfxAsset = (assetName: string) => {
         let inter = alt.setInterval(() => {
             if (natives.hasNamedPtfxAssetLoaded(assetName)) {
                 alt.clearInterval(inter);
-                alt.log('Asset loaded: ' + assetName);
+                //alt.log('Asset loaded: ' + assetName);
                 return resolve(true);
             }
             //alt.log('Requesting asset: ' + assetName);

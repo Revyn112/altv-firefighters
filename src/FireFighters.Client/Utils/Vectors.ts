@@ -38,3 +38,11 @@ export function vectorToRotAngles(vector: alt.Vector3) {
 
     return { x: ax, y: 0, z: -az }
 }
+
+export function add(v1: alt.Vector3, v2: alt.Vector3) {
+    return new alt.Vector3(v1.x + v2.x, v1.y + v2.y, v1.z + v2.z)
+}
+
+export function multiply(vector: alt.Vector3, scalar: number) {
+    return new alt.Vector3(vector.x * scalar, vector.y * scalar, vector.z * scalar)
+}
