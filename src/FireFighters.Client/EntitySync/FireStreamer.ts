@@ -15,7 +15,7 @@ class ClientFire {
 }
 
 var entities: ClientFire[] = []
-const EntityType = 3
+const EntityType = 992_001
 const EntitySyncRange = 500
 const FireSmokeSize = 8
 
@@ -23,11 +23,11 @@ alt.onServer("entitySync:create", async (entityId: number, entityType: number, p
     if (entityType !== EntityType)
         return;
 
-    alt.log('entitySync:create (fire)')
+    /*alt.log('entitySync:create (fire)')
     alt.log(entityId)
     alt.log(entityType)
     alt.log(position)
-    alt.log(newEntityData)
+    alt.log(JSON.stringify(newEntityData))*/
 
     if (newEntityData) {
         let fire = new ClientFire()

@@ -3,7 +3,7 @@ using AltV.Net.Elements.Entities;
 using System.Collections.Generic;
 using System.Numerics;
 
-namespace FireFighters.Server.Models
+namespace FireFighters.Models
 {
     public class FireStation
         : IWritable

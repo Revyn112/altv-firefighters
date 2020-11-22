@@ -5,6 +5,8 @@ import Camera from '../Utils/Camera'
 let loginCamera: Camera
 
 alt.on("consoleCommand", (command: string, ...args: string[]): void => {
+    // alt.log(JSON.stringify(args))
+
     if (command === 'pos') {
         alt.log(JSON.stringify(natives.getEntityCoords(alt.Player.local.scriptID, true)))
         alt.log(JSON.stringify(natives.getEntityHeading(alt.Player.local.scriptID)))
@@ -42,6 +44,23 @@ alt.on("consoleCommand", (command: string, ...args: string[]): void => {
 
     if (command === 'fire') {
         alt.emitServer('FireFighters:Debug:SpawnFire')
+        return
+    }
+
+    if (command === 'stopfire' && args.length >= 1) {
+        alt.log("stopfire")
+        alt.emitServer('FireFighters:Debug:StopFire', +args[0])
+        return
+    }
+
+    if (command === 'flamelvl' && args.length >= 2) {
+        alt.emitServer("FireFighters:Debug:SetFlameLevel", +args[0], +args[1])
+        return
+    }
+
+    if (command === 'flamelvl' && args.length === 1) {
+        alt.emitServer("FireFighters:Debug:GetFlameLevel", +args[0])
+        return
     }
 })
 

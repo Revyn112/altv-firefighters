@@ -20,18 +20,18 @@ class ClientFlame {
 }
 
 var entities: ClientFlame[] = []
-const EntityType = 4
+const EntityType = 992_002
 const EntitySyncRange = 500
 
 alt.onServer("entitySync:create", async (entityId: number, entityType: number, position: alt.Vector3, newEntityData: any) => {
     if (entityType !== EntityType)
         return;
 
-    alt.log('entitySync:create (flame)')
+    /*alt.log('entitySync:create (flame)')
     alt.log(entityId)
     alt.log(entityType)
     alt.log(position)
-    alt.log(newEntityData)
+    alt.log(JSON.stringify(newEntityData))*/
 
     if (newEntityData) {
         let flame = new ClientFlame()
@@ -81,15 +81,17 @@ alt.onServer("entitySync:updateData", async (entityId, entityType, newEntityData
     
     if (newEntityData.hasOwnProperty("level")) {
         entities[entityId].Level = newEntityData.level;
-        alt.log('Flame Id ' + entityId + ': Level ' + newEntityData.level)
+        //alt.log('Flame Id ' + entityId + ': Level ' + newEntityData.level)
     }
 
     if (newEntityData.hasOwnProperty("isPositionGroundValidated")) {
+        //alt.log('Flame Id ' + entityId + ': IsPositionGroundValidated ' + newEntityData.isPositionGroundValidated)
         entities[entityId].IsPositionGroundValidated = newEntityData.isPositionGroundValidated;
 
         if (Vectors.distance(alt.Player.local.pos, entities[entityId].Position) <= EntitySyncRange) {
-            removeEntityAtClient(entityId)
-            await spawnEntityAtClient(entityId)
+            //alt.log('distance check true')
+            removeEntityAtClient(entities[entityId])
+            await spawnEntityAtClient(entities[entityId])
         }
     }
 })
@@ -112,16 +114,16 @@ alt.onServer("entitySync:netOwner", (entityId, entityType, isNetOwner) => {
 
 const spawnEntityAtClient = async (flame: ClientFlame) => {
     if (!flame || !flame.IsPositionGroundValidated) return
-
-    flame.ScriptFireHandle = natives.startScriptFire(flame.Position.x, flame.Position.y, flame.Position.z, 25, flame.IsGasFire)
+    
+    flame.ScriptFireHandle = natives.startScriptFire(flame.Position.x, flame.Position.y, flame.Position.z + 0.1, 25, flame.IsGasFire)
 
     await AsyncHelper.RequestNamedPtfxAsset("scr_trevor3")
     natives.useParticleFxAsset("scr_trevor3")
-    flame.FlameHandle = natives.startParticleFxLoopedAtCoord("scr_trev3_trailer_plume", flame.Position.x, flame.Position.y, flame.Position.z + 0.4, 0, 0, 0, 0.7, false, false, false, false)
+    flame.FlameHandle = natives.startParticleFxLoopedAtCoord("scr_trev3_trailer_plume", flame.Position.x, flame.Position.y, flame.Position.z + 1, 0, 0, 0, 0.7, false, false, false, false)
 
     await AsyncHelper.RequestNamedPtfxAsset("scr_agencyheistb")
     natives.useParticleFxAsset("scr_agencyheistb")
-    flame.SmokeHandle = natives.startParticleFxLoopedAtCoord("scr_env_agency3b_smoke", flame.Position.x, flame.Position.y, flame.Position.z, 0, 0, 0, 3, false, false, false, false)
+    flame.SmokeHandle = natives.startParticleFxLoopedAtCoord("scr_env_agency3b_smoke", flame.Position.x, flame.Position.y, flame.Position.z + 1, 0, 0, 0, 3, false, false, false, false)
 
     flame.Active = true
 }
@@ -169,6 +171,5 @@ alt.onServer('FireFighters:Flame:RespawnScriptFire', (entityId: number) => {
 
 alt.onServer('FireFighters:Flame:DeterminePositionGround', async (entityId: number, position: alt.Vector3) => {
     let ground = await NativesHelper.getGroundZ(position.x, position.y, position.z)
-
     alt.emitServer('FireFighters:Flame:FoundPositionGround', entityId, ground);
 })

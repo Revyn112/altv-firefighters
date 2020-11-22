@@ -3,9 +3,15 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.30711.63
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FireFighters.Server", "FireFighters.Server\FireFighters.Server.csproj", "{24059184-B39B-490E-8281-DA9784DCAE88}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FireFighters.Server", "FireFighters.Server\FireFighters.Server.csproj", "{24059184-B39B-490E-8281-DA9784DCAE88}"
 EndProject
 Project("{9092AA53-FB77-4645-B42D-1CCCA6BD08BD}") = "FireFighters.Client", "FireFighters.Client\FireFighters.Client.njsproj", "{28A41BC0-7626-4245-BC7C-7B24A6324F14}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FireFighters.Standalone.Server", "FireFighters.Standalone.Server\FireFighters.Standalone.Server.csproj", "{C68DA6BA-25F0-42BB-B0DF-2003A6C0F163}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FireFighters.Models", "FireFighters.Models\FireFighters.Models.csproj", "{E77BD73B-BC38-40A8-B407-FC74FEF77608}"
+EndProject
+Project("{9092AA53-FB77-4645-B42D-1CCCA6BD08BD}") = "FireFighters.Standalone.Client", "FireFighters.Standalone.Client\FireFighters.Standalone.Client.njsproj", "{9107EF9A-DB92-4C81-88BA-A8E41ED23170}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,6 +27,18 @@ Global
 		{28A41BC0-7626-4245-BC7C-7B24A6324F14}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{28A41BC0-7626-4245-BC7C-7B24A6324F14}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{28A41BC0-7626-4245-BC7C-7B24A6324F14}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C68DA6BA-25F0-42BB-B0DF-2003A6C0F163}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C68DA6BA-25F0-42BB-B0DF-2003A6C0F163}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C68DA6BA-25F0-42BB-B0DF-2003A6C0F163}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C68DA6BA-25F0-42BB-B0DF-2003A6C0F163}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E77BD73B-BC38-40A8-B407-FC74FEF77608}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E77BD73B-BC38-40A8-B407-FC74FEF77608}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E77BD73B-BC38-40A8-B407-FC74FEF77608}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E77BD73B-BC38-40A8-B407-FC74FEF77608}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9107EF9A-DB92-4C81-88BA-A8E41ED23170}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9107EF9A-DB92-4C81-88BA-A8E41ED23170}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9107EF9A-DB92-4C81-88BA-A8E41ED23170}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9107EF9A-DB92-4C81-88BA-A8E41ED23170}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

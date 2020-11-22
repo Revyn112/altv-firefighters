@@ -2,15 +2,15 @@
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">14.0</VisualStudioVersion>
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
-    <Name>FireFighters.Client</Name>
-    <RootNamespace>FireFighters.Client</RootNamespace>
+    <Name>FireFighters.Standalone.Client</Name>
+    <RootNamespace>FireFighters.Standalone.Client</RootNamespace>
     <SaveNodeJsSettingsInProjectFile>True</SaveNodeJsSettingsInProjectFile>
   </PropertyGroup>
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>28a41bc0-7626-4245-bc7c-7b24a6324f14</ProjectGuid>
+    <ProjectGuid>9107ef9a-db92-4c81-88ba-a8e41ed23170</ProjectGuid>
     <ProjectHome>.</ProjectHome>
     <StartupFile>index.ts</StartupFile>
     <StartWebBrowser>False</StartWebBrowser>
@@ -21,7 +21,7 @@
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <ProjectTypeGuids>{3AF33F2E-1136-4D97-BBB7-1795711AC8B8};{9092AA53-FB77-4645-B42D-1CCCA6BD08BD}</ProjectTypeGuids>
     <EnableTypeScript>true</EnableTypeScript>
-    <StartWebBrowser>False</StartWebBrowser>
+    <StartWebBrowser>false</StartWebBrowser>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
     <DebugSymbols>true</DebugSymbols>
@@ -30,26 +30,63 @@
     <DebugSymbols>true</DebugSymbols>
   </PropertyGroup>
   <ItemGroup>
-    <None Include="index.ts" />
+    <Content Include="libs\NativeUI\version.txt" />
     <Content Include="package.json" />
     <Content Include="tsconfig.json" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Handlers\" />
-    <Folder Include="EntitySync\" />
-    <Folder Include="Utils\" />
+    <TypeScriptCompile Include="Handlers\ConnectionHandler.ts" />
+    <TypeScriptCompile Include="Handlers\ConsoleHandler.ts" />
+    <TypeScriptCompile Include="Handlers\WaypointTeleportHandler.ts" />
+    <TypeScriptCompile Include="index.ts" />
+    <TypeScriptCompile Include="libs\NativeUI\enums\Alignment.ts" />
+    <TypeScriptCompile Include="libs\NativeUI\enums\BadgeStyle.ts" />
+    <TypeScriptCompile Include="libs\NativeUI\enums\ChangeDirection.ts" />
+    <TypeScriptCompile Include="libs\NativeUI\enums\Control.ts" />
+    <TypeScriptCompile Include="libs\NativeUI\enums\Font.ts" />
+    <TypeScriptCompile Include="libs\NativeUI\enums\HudColor.ts" />
+    <TypeScriptCompile Include="libs\NativeUI\items\UIMenuAutoListItem.ts" />
+    <TypeScriptCompile Include="libs\NativeUI\items\UIMenuCheckboxItem.ts" />
+    <TypeScriptCompile Include="libs\NativeUI\items\UIMenuDynamicListItem.ts" />
+    <TypeScriptCompile Include="libs\NativeUI\items\UIMenuItem.ts" />
+    <TypeScriptCompile Include="libs\NativeUI\items\UIMenuListItem.ts" />
+    <TypeScriptCompile Include="libs\NativeUI\items\UIMenuSliderItem.ts" />
+    <TypeScriptCompile Include="libs\NativeUI\modules\BigMessage.ts" />
+    <TypeScriptCompile Include="libs\NativeUI\modules\Container.ts" />
+    <TypeScriptCompile Include="libs\NativeUI\modules\IElement.ts" />
+    <TypeScriptCompile Include="libs\NativeUI\modules\InstructionalButton.ts" />
+    <TypeScriptCompile Include="libs\NativeUI\modules\ItemsCollection.ts" />
+    <TypeScriptCompile Include="libs\NativeUI\modules\ListItem.ts" />
+    <TypeScriptCompile Include="libs\NativeUI\modules\Message.ts" />
+    <TypeScriptCompile Include="libs\NativeUI\modules\MidsizedMessage.ts" />
+    <TypeScriptCompile Include="libs\NativeUI\modules\Rectangle.ts" />
+    <TypeScriptCompile Include="libs\NativeUI\modules\ResRectangle.ts" />
+    <TypeScriptCompile Include="libs\NativeUI\modules\ResText.ts" />
+    <TypeScriptCompile Include="libs\NativeUI\modules\Sprite.ts" />
+    <TypeScriptCompile Include="libs\NativeUI\modules\Text.ts" />
+    <TypeScriptCompile Include="libs\NativeUI\NativeUi.ts" />
+    <TypeScriptCompile Include="libs\NativeUI\utils\Color.ts" />
+    <TypeScriptCompile Include="libs\NativeUI\utils\Common.ts" />
+    <TypeScriptCompile Include="libs\NativeUI\utils\LiteEvent.ts" />
+    <TypeScriptCompile Include="libs\NativeUI\utils\Number.ts" />
+    <TypeScriptCompile Include="libs\NativeUI\utils\Point.ts" />
+    <TypeScriptCompile Include="libs\NativeUI\utils\Scaleform.ts" />
+    <TypeScriptCompile Include="libs\NativeUI\utils\Screen.ts" />
+    <TypeScriptCompile Include="libs\NativeUI\utils\Size.ts" />
+    <TypeScriptCompile Include="libs\NativeUI\utils\UUIDV4.ts" />
+    <TypeScriptCompile Include="Utils\AsyncHelper.ts" />
+    <TypeScriptCompile Include="Utils\Camera.ts" />
+    <TypeScriptCompile Include="Utils\NativesHelper.ts" />
   </ItemGroup>
   <ItemGroup>
-    <TypeScriptCompile Include="EntitySync\FireStreamer.ts" />
-    <TypeScriptCompile Include="EntitySync\FlameStreamer.ts">
-      <SubType>Code</SubType>
-    </TypeScriptCompile>
-    <TypeScriptCompile Include="Handlers\BigWetHoseHandler.ts">
-      <SubType>Code</SubType>
-    </TypeScriptCompile>
-    <TypeScriptCompile Include="Utils\AsyncHelper.ts" />
-    <TypeScriptCompile Include="Utils\NativesHelper.ts" />
-    <TypeScriptCompile Include="Utils\Vectors.ts" />
+    <Folder Include="Handlers\" />
+    <Folder Include="libs\" />
+    <Folder Include="libs\NativeUI\" />
+    <Folder Include="libs\NativeUI\enums\" />
+    <Folder Include="libs\NativeUI\items\" />
+    <Folder Include="libs\NativeUI\modules\" />
+    <Folder Include="libs\NativeUI\utils\" />
+    <Folder Include="Utils\" />
   </ItemGroup>
   <Import Project="$(VSToolsPath)\Node.js Tools\Microsoft.NodejsToolsV2.targets" />
   <ProjectExtensions>

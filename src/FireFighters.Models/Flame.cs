@@ -1,30 +1,20 @@
 ﻿using AltV.Net.EntitySync;
-using FireFighters.Server.Modules;
 using System;
 using System.Collections.Generic;
 using System.Numerics;
-using System.Threading;
 
-namespace FireFighters.Server.EntitySync.Types
+namespace FireFighters.Models
 {
     public class Flame
         : Entity
     {
-        private readonly Flame _parent;
-        private readonly Random _random;
-        private readonly CancellationToken _cancelToken;
-
-        private DateTime _lastManagedTick;
-
-        public Flame(Flame parent, Vector3 position, bool isGasFire)
-            : base((ulong)EntityTypes.Flame, position, 0, FireModule.FireStreamRange)
+        public Flame(Vector3 position, bool isGasFire)
+            : base((ulong)EntityTypes.Flame, position, 0, Constants.EntitySyncRange)
         {
             IsGasFire = isGasFire;
             Level = 0;
 
-            _parent = parent;
-            _random = new Random();
-            _cancelToken = parent?._cancelToken ?? new CancellationToken();
+            Active = true;
 
             Children = new List<Flame>();
         }
@@ -91,40 +81,8 @@ namespace FireFighters.Server.EntitySync.Types
 
         public List<Flame> Children { get; set; }
 
-        public void OnTick()
-        {
-            if (_cancelToken.IsCancellationRequested || !IsPositionGroundValidated)
-            {
-                return;
-            }
+        public bool Active { get; set; }
 
-            if (Extinguished)
-            {
-                AltEntitySync.RemoveEntity(this);
-                return;
-            }
-
-            // manage level up
-            if (DateTime.Now < _lastManagedTick + TimeSpan.FromSeconds(10d))
-            {
-                return;
-            }
-
-            _lastManagedTick = DateTime.Now;
-            
-            if (_random.Next(0, 100) + Math.Max(Level, 20) >= 30)
-            {
-                Level += 1;
-            }
-
-            // create children
-            if (Level > 10 && _random.Next(0, 100) < 10)
-            {
-                var childFlamePos = Position + new Vector3(_random.Next(0, 8), _random.Next(0, 9), 0);
-
-                var childFlame = new FlameBuilder(this).SetPosition(childFlamePos).InitializeFlame();
-                Children.Add(childFlame);
-            }
-        }
+        public DateTime LastManagedTick { get; set; }
     }
 }

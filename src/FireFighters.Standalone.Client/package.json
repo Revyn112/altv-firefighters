@@ -1,0 +1,21 @@
+{
+    "name": "fire-fighters.standalone.client",
+    "version": "0.0.0",
+    "description": "FireFighters.Standalone.Client",
+    "type": "module",
+    "author": {
+        "name": "ithr0n"
+    },
+    "scripts": {
+        "build": "tsc --build",
+        "clean": "tsc --build --clean"
+    },
+    "devDependencies": {
+        "@types/node": "^8.0.14",
+        "typescript": "^3.2.2"
+    },
+    "dependencies": {
+        "@altv/types-client": "^1.3.4",
+        "@altv/types-natives": "^1.1.0"
+    }
+}

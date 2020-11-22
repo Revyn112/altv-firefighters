@@ -1,7 +1,7 @@
 ﻿using AltV.Net;
-using AltV.Net.Async;
 using AltV.Net.Data;
 using AltV.Net.Elements.Entities;
+using FireFighters.ServerStandalone;
 using Newtonsoft.Json;
 using System.Linq;
 
@@ -23,13 +23,13 @@ namespace FireFighters.Server.Modules
             player.Position = new Position();
             player.Dimension = 100 + player.Id;
 
-            player.Emit("FireFighters:InitFireStations", FirefighterResource.FireStations);
-            player.Emit("FireFighters:SelectSpawn", JsonConvert.SerializeObject(FirefighterResource.FireStations.Select(e => e.Name)));
+            player.Emit("FireFighters:InitFireStations", StandaloneResource.FireStations);
+            player.Emit("FireFighters:SelectSpawn", JsonConvert.SerializeObject(StandaloneResource.FireStations.Select(e => e.Name)));
         }
 
         private void OnSpawnAtPoint(IPlayer player, string fireStationName)
         {
-            var fireStation = FirefighterResource.FireStations.SingleOrDefault(e => e.Name == fireStationName);
+            var fireStation = StandaloneResource.FireStations.SingleOrDefault(e => e.Name == fireStationName);
 
             if (fireStation == null)
             {

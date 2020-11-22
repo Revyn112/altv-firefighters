@@ -1,0 +1,9 @@
+{
+  "profiles": {
+    "FireFighters.Standalone.Server": {
+      "commandName": "Executable",
+      "executablePath": "./altv-server.exe",
+      "workingDirectory": "../../bin/"
+    }
+  }
+}

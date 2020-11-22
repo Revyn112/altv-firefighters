@@ -2,11 +2,10 @@
 using AltV.Net.Data;
 using AltV.Net.Elements.Entities;
 using AltV.Net.EntitySync;
-using FireFighters.Server.EntitySync;
-using FireFighters.Server.EntitySync.Types;
-using System;
+using FireFighters.Models;
+using FireFighters.Server.Builders;
 using System.Linq;
-using System.Threading.Tasks;
+using System.Numerics;
 
 namespace FireFighters.Server.Modules
 {
@@ -18,40 +17,37 @@ namespace FireFighters.Server.Modules
         public FireModule()
         {
             Alt.OnServer<Position>("FireFighters:Fire:Create", OnServerFireCreate);
-            
-            Alt.OnClient("FireFighters:Fire:Create", OnClientFireCreate);
+            Alt.OnServer<ulong>("FireFighters:Fire:Remove", OnServerFireRemove);
+
             Alt.OnClient<ulong>("FireFighters:Flame:ScriptFireExtinguished", OnClientFlameScriptFireExtinguished);
-            Alt.OnClient<ulong, Position>("FireFighters:Flame:FoundPositionGround", OnClientFlameFoundPositionGround);
-        }
-
-        private void OnClientFlameFoundPositionGround(ulong entityId, Position position)
-        {
-            if (!AltEntitySync.TryGetEntity(entityId, (ulong)EntityTypes.Flame, out AltV.Net.EntitySync.IEntity entity))
-            {
-                return;
-            }
-
-            if (entity is not Flame flame)
-            {
-                return;
-            }
-
-            flame.Position = position;
-            flame.IsPositionGroundValidated = true;
+            Alt.OnClient<ulong, float>("FireFighters:Flame:FoundPositionGround", OnClientFlameFoundPositionGround);
         }
 
         private void OnServerFireCreate(Position position)
         {
             var _ = new FireBuilder()
                 .SetPosition(position)
+                .SetFlameSpawnDelay(3000)
                 .InitializeFire();
         }
 
-        private void OnClientFireCreate(IPlayer player)
+        private void OnServerFireRemove(ulong fireId)
         {
-            var _ = new FireBuilder()
-                .SetPosition(player.Position)
-                .InitializeFire();
+            // Console.WriteLine($"Try to stop fire {fireId}");
+
+            if (!AltEntitySync.TryGetEntity(fireId, (ulong)EntityTypes.Fire, out AltV.Net.EntitySync.IEntity entity))
+            {
+                return;
+            }
+
+            if (entity is not Fire fire)
+            {
+                return;
+            }
+
+            fire.MainFlame.Extinguished = true;
+
+            // Console.WriteLine($"Fire {fireId} stopped");
         }
 
         private void OnClientFlameScriptFireExtinguished(IPlayer player, ulong entityId)
@@ -73,7 +69,22 @@ namespace FireFighters.Server.Modules
             }
 
             flame.Extinguished = true;
-            AltEntitySync.RemoveEntity(flame);
+        }
+
+        private void OnClientFlameFoundPositionGround(IPlayer player, ulong entityId, float ground)
+        {
+            if (!AltEntitySync.TryGetEntity(entityId, (ulong)EntityTypes.Flame, out AltV.Net.EntitySync.IEntity entity))
+            {
+                return;
+            }
+
+            if (entity is not Flame flame)
+            {
+                return;
+            }
+
+            flame.Position = new Vector3(flame.Position.X, flame.Position.Y, ground);
+            flame.IsPositionGroundValidated = true;
         }
     }
 }

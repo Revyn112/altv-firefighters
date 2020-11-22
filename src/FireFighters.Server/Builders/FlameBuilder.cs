@@ -1,48 +1,53 @@
 ﻿using AltV.Net;
 using AltV.Net.Elements.Entities;
 using AltV.Net.EntitySync;
-using FireFighters.Server.EntitySync.Types;
+using FireFighters.Models;
 using System;
 using System.Numerics;
 
-namespace FireFighters.Server
+namespace FireFighters.Server.Builders
 {
     public class FlameBuilder
     {
-        private Flame _flame;
+        private bool _isGasFire;
+        private Vector3 _position;
+        private uint _level;
 
-        public FlameBuilder(Flame parent = null)
+        public FlameBuilder()
         {
-            Reset(parent);
+            Reset();
         }
 
-        public FlameBuilder Reset(Flame parent)
+        public FlameBuilder Reset()
         {
-            _flame = new Flame(parent, parent?.Position ?? Vector3.Zero, false);
+            _isGasFire = false;
+            _position = Vector3.Zero;
+            _level = 0;
+
             return this;
         }
 
         public FlameBuilder GasFire()
         {
-            _flame.IsGasFire = true;
+            _isGasFire = true;
             return this;
         }
 
         public FlameBuilder SetPosition(Vector3 position)
         {
-            _flame.Position = position;
+            _position = position;
             return this;
         }
 
-        public FlameBuilder SetLevel(ushort level)
+        public FlameBuilder SetLevel(uint level)
         {
-            _flame.Level = level;
+            _level = level;
             return this;
         }
 
         public Flame InitializeFlame()
         {
-            if (_flame.Position == Vector3.Zero) // multithreading issue: race-condition
+            if (_position == Vector3.Zero) // multithreading issue: race-condition
             {
                 var ex = new InvalidOperationException("Flame needs a position");
                 Alt.Log("Exception on FlameBuilder: " + ex.Message);
@@ -54,7 +59,7 @@ namespace FireFighters.Server
 
             foreach (var player in Alt.GetAllPlayers())
             {
-                var distance = player.Position.Distance(_flame.Position);
+                var distance = player.Position.Distance(_position);
 
                 if (distance < nearestDistance)
                 {
@@ -70,11 +75,16 @@ namespace FireFighters.Server
                 throw ex;
             }
 
-            AltEntitySync.AddEntity(_flame);
+            var flame = new Flame(_position, _isGasFire)
+            {
+                Level = _level
+            };
 
-            nearestPlayer.Emit("FireFighters:Flame:DeterminePositionGround", _flame.Id, _flame.Position);
+            AltEntitySync.AddEntity(flame);
 
-            return _flame;
+            nearestPlayer.Emit("FireFighters:Flame:DeterminePositionGround", flame.Id, flame.Position);
+
+            return flame;
         }
     }
 }

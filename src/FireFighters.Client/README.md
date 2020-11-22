@@ -1,3 +1,0 @@
-# FireFighters.Client
-
-

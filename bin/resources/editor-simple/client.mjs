@@ -30,6 +30,9 @@ view.on('editorOpened', (active) => {
       view.focus();
 })
 
+view.on('log', (...args) => {
+	alt.log(args)
+})
 
 alt.on('keyup', (key) => {
   if (!loaded) return;
